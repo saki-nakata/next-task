@@ -3,12 +3,13 @@ import { connectDB } from "@/utils/database";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
-  _: NextRequest,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) => {
   try {
     await connectDB();
-    const task = await TaskModel.findById(params.id);
+    const { id } = context.params;
+    const task = await TaskModel.findById(id);
     if (!task) {
       return NextResponse.json(
         { message: "該当するタスクがありません。" },
