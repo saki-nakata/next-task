@@ -2,14 +2,16 @@ import { TaskModel } from "@/models/task";
 import { connectDB } from "@/utils/database";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  request: NextRequest,
-  context: { params: { id: string } }
-) => {
+export const GET = async (request: NextRequest, { params }: { params: { id: string } | Promise<{ id: string }> }) => {
   try {
     await connectDB();
-    const { id } = context.params;
+
+    // params が Promise の場合は await する
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const { id } = resolvedParams;
+
     const task = await TaskModel.findById(id);
+
     if (!task) {
       return NextResponse.json(
         { message: "該当するタスクがありません。" },
