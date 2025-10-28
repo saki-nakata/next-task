@@ -4,9 +4,7 @@ import Link from "next/link";
 import { MdAddTask } from "react-icons/md";
 
 const getAllTask = async () => {
-  const response = await fetch(`${process.env.API_URL}/task`, {
-    cache: "no-store",
-  });
+  const response = await fetch(`${process.env.API_URL}/task`);
   if (response.status !== 200) {
     throw new Error();
   }

@@ -2,8 +2,7 @@
 
 import { FormState, updateTask } from "@/actions/task";
 import { TaskDocument } from "@/models/task";
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 
 interface Props {
   task: TaskDocument;
@@ -16,24 +15,10 @@ const EditTaskForm = ({ task }: Props) => {
   const [stateIsClosed, setStateIsClosed] = useState(task.isClosed);
 
   const updateTaskWithId = updateTask.bind(null, task._id);
-  const [state, formAction] = useFormState(updateTaskWithId, {
+  const [state, formAction, isPending] = useActionState(updateTaskWithId, {
     error: "",
     success: "",
   });
-
-  const SubmitButton = () => {
-    const { pending } = useFormStatus();
-    return (
-      <button
-        type="submit"
-        disabled={pending}
-        className="mt-8 py-2 w-full rounded-md text-white bg-gray-800 hover:bg-gray-700 text-sm font-semibold shadow-sm disabled:bg-gray-400"
-      >
-        編集
-      </button>
-    );
-  };
-
   useEffect(() => {
     if (state && state.success != "") {
       alert(state.success);
@@ -99,7 +84,13 @@ const EditTaskForm = ({ task }: Props) => {
             タスクを完了
           </label>
         </div>
-        <SubmitButton />
+        <button
+          type="submit"
+          disabled={isPending}
+          className="mt-8 py-2 w-full rounded-md text-white bg-gray-800 hover:bg-gray-700 text-sm font-semibold shadow-sm disabled:bg-gray-400"
+        >
+          編集
+        </button>
         {state.error !== "" && (
           <p className="mt-2 text-red-500 text-sm">{state.error}</p>
         )}

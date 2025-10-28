@@ -2,9 +2,7 @@ import TaskCard from "@/components/TaskCard/card";
 import { TaskDocument } from "@/models/task";
 
 const getOverdueTask = async () => {
-  const response = await fetch(`${process.env.API_URL}/task/overdue`, {
-    cache: "no-store",
-  });
+  const response = await fetch(`${process.env.API_URL}/task/overdue`);
   if (response.status !== 200) {
     throw new Error();
   }

@@ -8,9 +8,7 @@ interface Props {
 }
 
 const getTask = async (id: string) => {
-  const response = await fetch(`${process.env.API_URL}/task/${id}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(`${process.env.API_URL}/task/${id}`);
   const data = await response.json();
   return data.task as TaskDocument;
 };

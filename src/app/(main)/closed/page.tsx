@@ -2,9 +2,7 @@ import TaskCard from "@/components/TaskCard/card";
 import { TaskDocument } from "@/models/task";
 
 const getClosedTask = async () => {
-  const response = await fetch(`${process.env.API_URL}/task/closed`, {
-    cache: "no-store",
-  });
+  const response = await fetch(`${process.env.API_URL}/task/closed`);
   if (response.status !== 200) {
     throw new Error();
   }

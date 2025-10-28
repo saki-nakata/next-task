@@ -1,7 +1,7 @@
 "use client";
+
 import { deleteTask } from "@/actions/task";
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 const TaskDeleteButton = ({ id }: Props) => {
   const deleteTaskWithId = deleteTask.bind(null, id);
-  const [state, formAction] = useFormState(deleteTaskWithId, {
+  const [state, formAction, isPending] = useActionState(deleteTaskWithId, {
     error: "",
     success: "",
   });
@@ -20,21 +20,16 @@ const TaskDeleteButton = ({ id }: Props) => {
       alert(state.error);
     }
   }, [state]);
-  const SubmitButton = () => {
-    const { pending } = useFormStatus();
-    return (
+
+  return (
+    <form action={formAction}>
       <button
         type="submit"
-        disabled={pending}
+        disabled={isPending}
         className="hover-text-gray-700 text-lg cursor-pointer disabled:bg-gray-400"
       >
         <FaTrashAlt />
       </button>
-    );
-  };
-  return (
-    <form action={formAction}>
-      <SubmitButton />
     </form>
   );
 };
